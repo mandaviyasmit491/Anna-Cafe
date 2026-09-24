@@ -1,0 +1,961 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anna Cafe - Authentic South Indian Dining & Kaapi Bar</title>
+    
+    <!-- Google Fonts & Font Awesome Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #f59e0b; /* Golden Yellow / Turmeric */
+            --primary-dark: #d97706;
+            --accent-green: #16a34a; /* Banana Leaf Green */
+            --bg-dark: #120b08; /* Deep Teak / Coffee Black */
+            --bg-card: #1c120c;
+            --bg-card-hover: #281b12;
+            --text-gold: #fbbf24;
+            --text-light: #f8fafc;
+            --text-muted: #94a3b8;
+            --font-title: 'Cinzel Decorative', serif;
+            --font-body: 'Poppins', sans-serif;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-dark);
+            border-radius: 4px;
+        }
+
+        /* --- Header & Navigation --- */
+        header {
+            background-color: rgba(18, 11, 8, 0.95);
+            border-bottom: 2px solid rgba(245, 158, 11, 0.3);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+        }
+
+        nav {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-family: var(--font-body);
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-gold);
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        .logo-badge {
+            background: linear-gradient(135deg, var(--primary), var(--accent-green));
+            color: white;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            box-shadow: 0 0 10px rgba(245, 158, 11, 0.5);
+        }
+
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+            cursor: pointer;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: var(--primary);
+        }
+
+        /* Cart Icon Button */
+        .cart-btn {
+            position: relative;
+            background: var(--primary);
+            color: #000;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: transform 0.2s, background 0.3s;
+        }
+
+        .cart-btn:hover {
+            background: var(--text-gold);
+            transform: scale(1.05);
+        }
+
+        .cart-badge {
+            background: var(--accent-green);
+            color: white;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        /* --- Page Router --- */
+        .page {
+            display: none;
+            min-height: calc(100vh - 150px);
+            animation: fadeIn 0.4s ease-out forwards;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- Common Utilities --- */
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        .section-title {
+            text-align: center;
+            font-family: var(--font-title);
+            font-size: 2.2rem;
+            color: var(--text-gold);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--accent-green);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 3rem;
+            font-size: 0.85rem;
+        }
+
+        .btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: #000;
+            font-weight: 600;
+            padding: 0.8rem 2rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 1rem;
+            display: inline-block;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(245, 158, 11, 0.3);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
+            background: var(--text-gold);
+        }
+
+        .btn-outline {
+            background: transparent;
+            border: 2px solid var(--primary);
+            color: var(--text-gold);
+            box-shadow: none;
+            margin-left: 10px;
+        }
+
+        .btn-outline:hover {
+            background: var(--primary);
+            color: #000;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            min-height: 85vh;
+            background: linear-gradient(rgba(18, 11, 8, 0.75), rgba(18, 11, 8, 0.85)), 
+                        url('https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?auto=format&fit=crop&w=1600&q=80') center/cover no-repeat;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 2rem;
+        }
+
+        .hero-content h1 {
+            font-family: var(--font-title);
+            font-size: 3.5rem;
+            color: var(--text-gold);
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            text-shadow: 2px 4px 10px rgba(0,0,0,0.8);
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 2.5rem;
+            color: var(--text-muted);
+        }
+
+        /* --- Quick Stats Bar --- */
+        .stats-bar {
+            background: var(--bg-card);
+            border-y: 1px solid rgba(245, 158, 11, 0.2);
+            padding: 2.5rem 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            text-align: center;
+        }
+
+        .stat-item i {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-item h3 {
+            font-size: 1.5rem;
+            color: var(--text-light);
+        }
+
+        .stat-item p {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        /* --- Menu Page & Filters --- */
+        .menu-filters {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: var(--bg-card);
+            color: var(--text-light);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            padding: 0.6rem 1.5rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            background: var(--primary);
+            color: #000;
+            border-color: var(--primary);
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .menu-card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            overflow: hidden;
+            border: 1px solid rgba(245, 158, 11, 0.15);
+            transition: all 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--primary);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            background: var(--bg-card-hover);
+        }
+
+        .menu-img {
+            height: 200px;
+            width: 100%;
+            object-fit: cover;
+        }
+
+        .menu-info {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .menu-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+
+        .menu-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text-gold);
+        }
+
+        .menu-price {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--accent-green);
+        }
+
+        .menu-desc {
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .add-to-cart-btn {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--text-gold);
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            width: 100%;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .add-to-cart-btn:hover {
+            background: var(--primary);
+            color: #000;
+        }
+
+        /* --- About Section --- */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .about-text h3 {
+            font-size: 1.8rem;
+            color: var(--text-gold);
+            margin-bottom: 1rem;
+        }
+
+        .about-text p {
+            color: var(--text-muted);
+            margin-bottom: 1.2rem;
+        }
+
+        .about-images {
+            position: relative;
+        }
+
+        .about-img-main {
+            width: 100%;
+            border-radius: 12px;
+            border: 4px solid var(--primary);
+        }
+
+        /* --- Reservation / Contact Section --- */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        .form-box {
+            background: var(--bg-card);
+            padding: 2.5rem;
+            border-radius: 12px;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .form-box h3 {
+            color: var(--text-gold);
+            margin-bottom: 1.5rem;
+            font-size: 1.4rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.4rem;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: var(--bg-dark);
+            border: 1px solid rgba(245, 158, 11, 0.3);
+            border-radius: 6px;
+            color: white;
+            font-family: inherit;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        /* --- Sliding Cart Drawer --- */
+        .cart-drawer {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 380px;
+            height: 100vh;
+            background: var(--bg-card);
+            box-shadow: -5px 0 25px rgba(0,0,0,0.8);
+            z-index: 2000;
+            transition: right 0.4s ease;
+            display: flex;
+            flex-direction: column;
+            border-left: 2px solid var(--primary);
+        }
+
+        .cart-drawer.open {
+            right: 0;
+        }
+
+        .cart-header {
+            padding: 1.5rem;
+            background: var(--bg-dark);
+            border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-header h3 {
+            color: var(--text-gold);
+        }
+
+        .close-cart {
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .cart-body {
+            padding: 1.5rem;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .cart-item-details h4 {
+            color: var(--text-light);
+            font-size: 0.95rem;
+        }
+
+        .cart-item-details p {
+            color: var(--accent-green);
+            font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        .remove-item {
+            color: #ef4444;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-size: 1rem;
+        }
+
+        .cart-footer {
+            padding: 1.5rem;
+            background: var(--bg-dark);
+            border-top: 1px solid rgba(245, 158, 11, 0.2);
+        }
+
+        .cart-total {
+            display: flex;
+            justify-content: space-between;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-gold);
+            margin-bottom: 1rem;
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0,0,0,0.7);
+            z-index: 1500;
+            display: none;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* --- Footer --- */
+        footer {
+            background-color: #0a0604;
+            padding: 3rem 2rem 1.5rem;
+            border-top: 1px solid rgba(245, 158, 11, 0.2);
+            color: var(--text-muted);
+            text-align: center;
+        }
+
+        .footer-content {
+            max-width: 1280px;
+            margin: 0 auto 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+        }
+
+        .social-links a {
+            color: var(--text-gold);
+            font-size: 1.2rem;
+            margin: 0 10px;
+            transition: color 0.3s;
+        }
+
+        .social-links a:hover {
+            color: var(--accent-green);
+        }
+
+        /* --- Responsive Design --- */
+        @media (max-width: 900px) {
+            .about-grid, .contact-grid {
+                grid-template-columns: 1fr;
+            }
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            .nav-links {
+                gap: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation -->
+    <header>
+        <nav>
+            <a href="#" class="logo" onclick="navigateTo('home')">
+                <div class="logo-badge"><i class="fa-solid fa-mug-hot"></i></div>
+                ANNA CAFE
+            </a>
+            <ul class="nav-links">
+                <li><a id="nav-home" class="active" onclick="navigateTo('home')">Home</a></li>
+                <li><a id="nav-about" onclick="navigateTo('about')">Our Story</a></li>
+                <li><a id="nav-menu" onclick="navigateTo('menu')">Menu</a></li>
+                <li><a id="nav-contact" onclick="navigateTo('contact')">Book & Contact</a></li>
+            </ul>
+            <button class="cart-btn" onclick="toggleCart()">
+                <i class="fa-solid fa-cart-shopping"></i>
+                <span>Cart</span>
+                <div class="cart-badge" id="cart-count">0</div>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Overlay for Cart Drawer -->
+    <div class="overlay" id="overlay" onclick="toggleCart()"></div>
+
+    <!-- Slide Cart Drawer -->
+    <div class="cart-drawer" id="cart-drawer">
+        <div class="cart-header">
+            <h3>Your Orders</h3>
+            <button class="close-cart" onclick="toggleCart()">&times;</button>
+        </div>
+        <div class="cart-body" id="cart-items">
+            <!-- Dynamic Cart Items Will Be Injected Here -->
+            <p style="text-align: center; color: var(--text-muted); margin-top: 2rem;">Your cart is currently empty.</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cart-total-price">₹0</span>
+            </div>
+            <button class="btn" style="width: 100%;" onclick="checkout()">Proceed to Order</button>
+        </div>
+    </div>
+
+    <!-- PAGE 1: HOME -->
+    <section id="home" class="page active">
+        <div class="hero">
+            <div class="hero-content">
+                <h1>Experience Pure Southern Warmth & Traditions</h1>
+                <p>A aromatic haven offering hand-ground filter degree kaapi, crispy ghee roasts, and authentic coastal tiffins served with love.</p>
+                <div>
+                    <button class="btn" onclick="navigateTo('menu')">Explore Menu</button>
+                    <button class="btn btn-outline" onclick="navigateTo('contact')">Book Table</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="stats-bar">
+            <div class="stat-item">
+                <i class="fa-solid fa-coffee"></i>
+                <h3>100% Authentic</h3>
+                <p>Coorg Arabica Beans</p>
+            </div>
+            <div class="stat-item">
+                <i class="fa-solid fa-leaf"></i>
+                <h3>Fresh Batter</h3>
+                <p>Natural Fermentation</p>
+            </div>
+            <div class="stat-item">
+                <i class="fa-solid fa-mortar-pestle"></i>
+                <h3>Stone Ground</h3>
+                <p>Fresh Daily Chutneys</p>
+            </div>
+            <div class="stat-item">
+                <i class="fa-solid fa-award"></i>
+                <h3>Heritage Vibe</h3>
+                <p>4.9 Star Customer Rating</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE 2: ABOUT US -->
+    <section id="about" class="page">
+        <div class="container">
+            <h2 class="section-title">Our Heritage</h2>
+            <p class="section-subtitle">Bringing South Indian Culture To Your Plate</p>
+
+            <div class="about-grid">
+                <div class="about-text">
+                    <h3>Preserving Decades of Tradition</h3>
+                    <p>Founded in 1998, <strong>Anna Cafe</strong> started as a tiny Kaapi stall serving early morning commuters with authentic degree filter coffee in traditional brass davarah cups.</p>
+                    <p>Every single dish in our kitchen follows ancestral recipes—from our slow-simmered aromatic Sambar infused with home-ground spices, to naturally fermented crispy Dosas cooked on cast-iron griddles.</p>
+                    <p>When you walk into Anna Cafe, you aren't just a customer; you are family ("Anna" means Elder Brother). Sit back, sip your Kaapi, and relish the timeless taste of the South.</p>
+                </div>
+                <div class="about-images">
+                    <img class="about-img-main" src="https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=800&q=80" alt="South Indian Food">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- PAGE 3: MENU -->
+    <section id="menu" class="page">
+        <div class="container">
+            <h2 class="section-title">Anna's Special Menu</h2>
+            <p class="section-subtitle">Fresh • Pure • Flavorful</p>
+
+            <!-- Dynamic Category Filter Buttons -->
+            <div class="menu-filters">
+                <button class="filter-btn active" onclick="filterMenu('all')">All Items</button>
+                <button class="filter-btn" onclick="filterMenu('beverages')">Beverages</button>
+                <button class="filter-btn" onclick="filterMenu('tiffins')">Tiffins</button>
+                <button class="filter-btn" onclick="filterMenu('desserts')">Desserts</button>
+            </div>
+
+            <!-- Menu Grid Dynamic Rendering Container -->
+            <div class="menu-grid" id="menu-container"></div>
+        </div>
+    </section>
+
+    <!-- PAGE 4: CONTACT & RESERVATION -->
+    <section id="contact" class="page">
+        <div class="container">
+            <h2 class="section-title">Visit & Reserve</h2>
+            <p class="section-subtitle">We would love to serve you</p>
+
+            <div class="contact-grid">
+                <!-- Reservation Form -->
+                <div class="form-box">
+                    <h3><i class="fa-solid fa-calendar-check" style="color: var(--primary);"></i> Reserve A Table</h3>
+                    <form onsubmit="handleReservation(event)">
+                        <div class="form-group">
+                            <label>Full Name</label>
+                            <input type="text" class="form-control" placeholder="John Doe" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Phone Number</label>
+                            <input type="tel" class="form-control" placeholder="+91 9876543210" required>
+                        </div>
+                        <div class="form-group" style="display: flex; gap: 10px;">
+                            <div style="flex:1;">
+                                <label>Date</label>
+                                <input type="date" class="form-control" required>
+                            </div>
+                            <div style="flex:1;">
+                                <label>Time Slot</label>
+                                <input type="time" class="form-control" required>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Number of Guests</label>
+                            <select class="form-control" required>
+                                <option value="2">2 Persons</option>
+                                <option value="4">4 Persons</option>
+                                <option value="6">6+ Family Table</option>
+                            </select>
+                        </div>
+                        <button type="submit" class="btn" style="width: 100%; margin-top: 10px;">Confirm Reservation</button>
+                    </form>
+                </div>
+
+                <!-- Cafe Info -->
+                <div class="form-box">
+                    <h3><i class="fa-solid fa-location-dot" style="color: var(--primary);"></i> Cafe Details</h3>
+                    <div style="margin-bottom: 1.5rem; color: var(--text-muted);">
+                        <p style="color: white; font-weight: 600; margin-bottom: 5px;">Location Address:</p>
+                        <p>#42 Heritage Road, Opp. Metro Pillar 12,</p>
+                        <p>Cultural Hub District, Pin: 560001</p>
+                    </div>
+                    <div style="margin-bottom: 1.5rem; color: var(--text-muted);">
+                        <p style="color: white; font-weight: 600; margin-bottom: 5px;">Timings:</p>
+                        <p>Mon - Sun: 06:30 AM - 10:30 PM</p>
+                    </div>
+                    <div style="margin-bottom: 1.5rem; color: var(--text-muted);">
+                        <p style="color: white; font-weight: 600; margin-bottom: 5px;">Contact Numbers:</p>
+                        <p>+91 98765 43210 / 080 2345678</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="logo">
+                <div class="logo-badge"><i class="fa-solid fa-mug-hot"></i></div>
+                ANNA CAFE
+            </div>
+            <div class="social-links">
+                <a href="#"><i class="fa-brands fa-instagram"></i></a>
+                <a href="#"><i class="fa-brands fa-facebook"></i></a>
+                <a href="#"><i class="fa-brands fa-twitter"></i></a>
+            </div>
+        </div>
+        <p>&copy; 2026 Anna Cafe. Authentic South Indian Dining Experience.</p>
+    </footer>
+
+    <!-- JavaScript logic -->
+    <script>
+        // --- Menu Item Data Set ---
+        const menuData = [
+            { id: 1, category: 'beverages', title: 'Degree Filter Kaapi', price: 40, desc: 'Freshly brewed Arabica-Robusta blend served in a brass davarah.', img: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=500&q=80' },
+            { id: 2, category: 'beverages', title: 'Jaggery Filter Coffee', price: 50, desc: 'Healthy alternative brewed with pure organic palm jaggery.', img: 'https://images.unsplash.com/photo-1517256064527-09c73fc73e38?auto=format&fit=crop&w=500&q=80' },
+            { id: 3, category: 'tiffins', title: 'Ghee Roast Masala Dosa', price: 120, desc: 'Crispy crepe smothered with pure cow ghee & spicy potato masala.', img: 'https://images.unsplash.com/photo-1610192244261-3f33de3f55e4?auto=format&fit=crop&w=500&q=80' },
+            { id: 4, category: 'tiffins', title: 'Gunpowder Podi Idli (4Pcs)', price: 90, desc: 'Soft steamed rice cakes tossed in authentic roasted red chili podi.', img: 'https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=500&q=80' },
+            { id: 5, category: 'tiffins', title: 'Crispy Medu Vada (2Pcs)', price: 70, desc: 'Golden-fried savory lentil doughnuts served with hot sambar.', img: 'https://images.unsplash.com/photo-1601050690597-df0568f70950?auto=format&fit=crop&w=500&q=80' },
+            { id: 6, category: 'desserts', title: 'Pineapple Rava Kesari', price: 60, desc: 'Rich saffron semolina pudding prepared with pure ghee & cashews.', img: 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=500&q=80' }
+        ];
+
+        let cart = [];
+
+        // --- Render Menu Items ---
+        function renderMenu(items) {
+            const container = document.getElementById('menu-container');
+            container.innerHTML = '';
+
+            items.forEach(item => {
+                container.innerHTML += `
+                    <div class="menu-card">
+                        <img src="${item.img}" alt="${item.title}" class="menu-img">
+                        <div class="menu-info">
+                            <div class="menu-header">
+                                <div class="menu-title">${item.title}</div>
+                                <div class="menu-price">₹${item.price}</div>
+                            </div>
+                            <div class="menu-desc">${item.desc}</div>
+                            <button class="add-to-cart-btn" onclick="addToCart(${item.id})">
+                                <i class="fa-solid fa-plus"></i> Add To Cart
+                            </button>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        // Filter Menu Categories
+        function filterMenu(category) {
+            // Active Button Styling
+            const buttons = document.querySelectorAll('.filter-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            if (category === 'all') {
+                renderMenu(menuData);
+            } else {
+                const filtered = menuData.filter(item => item.category === category);
+                renderMenu(filtered);
+            }
+        }
+
+        // --- Cart Drawer Logic ---
+        function addToCart(itemId) {
+            const product = menuData.find(item => item.id === itemId);
+            cart.push(product);
+            updateCart();
+            toggleCart(true); // Auto-open cart
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateCart();
+        }
+
+        function updateCart() {
+            document.getElementById('cart-count').innerText = cart.length;
+            const cartItemsContainer = document.getElementById('cart-items');
+            const totalPriceEl = document.getElementById('cart-total-price');
+
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = `<p style="text-align: center; color: var(--text-muted); margin-top: 2rem;">Your cart is currently empty.</p>`;
+                totalPriceEl.innerText = '₹0';
+                return;
+            }
+
+            cartItemsContainer.innerHTML = '';
+            let total = 0;
+
+            cart.forEach((item, index) => {
+                total += item.price;
+                cartItemsContainer.innerHTML += `
+                    <div class="cart-item">
+                        <div class="cart-item-details">
+                            <h4>${item.title}</h4>
+                            <p>₹${item.price}</p>
+                        </div>
+                        <button class="remove-item" onclick="removeFromCart(${index})">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+            });
+
+            totalPriceEl.innerText = `₹${total}`;
+        }
+
+        function toggleCart(forceOpen = false) {
+            const drawer = document.getElementById('cart-drawer');
+            const overlay = document.getElementById('overlay');
+            if (forceOpen) {
+                drawer.classList.add('open');
+                overlay.classList.add('active');
+            } else {
+                drawer.classList.toggle('open');
+                overlay.classList.toggle('active');
+            }
+        }
+
+        function checkout() {
+            if (cart.length === 0) {
+                alert("Your cart is empty!");
+                return;
+            }
+            alert("Thank you for your order! Your delicious South Indian meal is being prepared.");
+            cart = [];
+            updateCart();
+            toggleCart();
+        }
+
+        // --- Page Navigation ---
+        function navigateTo(pageId) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.getElementById(pageId).classList.add('active');
+
+            document.querySelectorAll('.nav-links a').forEach(link => link.classList.remove('active'));
+            const activeNav = document.getElementById(`nav-${pageId}`);
+            if (activeNav) activeNav.classList.add('active');
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Form Submission Handlers
+        function handleReservation(e) {
+            e.preventDefault();
+            alert("Table reservation request received! We will confirm your table via SMS.");
+            e.target.reset();
+        }
+
+        // Initial Menu Render on page load
+        renderMenu(menuData);
+    </script>
+</body>
+</html>
